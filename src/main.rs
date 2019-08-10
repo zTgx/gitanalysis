@@ -1,3 +1,5 @@
+use gitanalysis::Git;
+
 fn main() {
-    println!("Hello, world!");
+    Git::all_branch();
 }
