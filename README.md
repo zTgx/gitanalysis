@@ -1,2 +1,2 @@
 # gitapi-rs
-to be continued
+Github API Client in Rust

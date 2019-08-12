@@ -35,9 +35,7 @@ impl GitApi {
             transfer.perform().unwrap();
         }
 
-        // println!("{:#?}", String::from_utf8(buf));
         let info: Value = serde_json::from_slice(&buf).unwrap();
-        // println!("{:#?}", info["login"]);
 
         info
     }
