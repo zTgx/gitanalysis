@@ -26,6 +26,27 @@ impl Config {
     }
 }
 
+pub struct Path{
+    pub host: String,
+}
+impl Path {
+    pub fn new() -> Self {
+        Path {
+            host: HOST.to_string(),
+        }
+    }
+
+    pub fn and(&mut self, p: &'static str) -> &mut Self {
+        self.host = self.host.to_owned() + "/" + p;
+
+        self
+    }
+
+    pub fn to_string(&self) -> String {
+        self.host.to_owned()
+    }
+}
+
 pub struct GitApi {
     pub host: &'static str,
     pub engine: Easy,
@@ -45,10 +66,11 @@ impl GitApi {
 }
 
 impl GitApi {
-    pub fn get_profile(&mut self, path: &'static str) -> Value {
+    pub fn get(&mut self, path: &mut Path) -> Value {
         self.headers();
 
-        self.engine.url(&Config::get_url(path)).unwrap();
+        let path = path.to_string();
+        self.engine.url(&path).unwrap();
 
         let mut buf = Vec::new();
         {

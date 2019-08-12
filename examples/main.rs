@@ -1,5 +1,7 @@
 extern crate gitapi_rs as Api;
-use Api::GitApi;
+use Api::{GitApi, Path};
 fn main() {
-    println!("name: {}", GitApi::new().get_profile("/users/zTgx")["login"]);
+    let mut path = Path::new();
+    path.and("users").and("zTgx");
+    println!("name: {}", GitApi::new().get(&mut path)["login"]);
 }
