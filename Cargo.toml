@@ -1,6 +1,6 @@
 [package]
 name = "gitapi-rs"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["zTgx <747674262@qq.com>"]
 edition = "2018"
 repository = "https://github.com/zTgx/gitapi-rs.git"
@@ -12,3 +12,6 @@ exclude = [ "/.travis.yml" ]
 description = "git api in Rust"
 
 [dependencies]
+curl = "0.4.22"
+cast-rs = "0.2.0"
+serde_json = "1.0.40"
