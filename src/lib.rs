@@ -42,8 +42,8 @@ impl Path {
         self
     }
 
-    pub fn to_string(&self) -> String {
-        self.host.to_owned()
+    pub fn ok(&self) -> Result<String, String> {
+        Ok( self.host.to_owned() )
     }
 }
 
@@ -66,10 +66,9 @@ impl GitApi {
 }
 
 impl GitApi {
-    pub fn get(&mut self, path: &mut Path) -> Value {
+    pub fn get(&mut self, path: &String) -> Value {
         self.headers();
 
-        let path = path.to_string();
         self.engine.url(&path).unwrap();
 
         let mut buf = Vec::new();
