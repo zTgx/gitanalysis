@@ -4,7 +4,7 @@ use Api::http::path::Path;
 
 fn main() {
     let mut engine = Engine::new();
-    let path = Path::new().and(&"repos".to_owned()).and(&"user".to_owned()).and(&"repo_name".to_owned()).and(&"branches".to_owned()).ok();
+    let path = Path::new().slash(&"repos".to_owned()).slash(&"user".to_owned()).slash(&"repo_name".to_owned()).slash(&"branches".to_owned()).ok();
     let profile = engine.get(&path).unwrap();
     println!("profile: {:?}", profile);
 }

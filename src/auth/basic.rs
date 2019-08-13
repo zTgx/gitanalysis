@@ -29,7 +29,7 @@ impl <'a> BasicAuth <'a> {
     }
 
     pub fn auth(&mut self) -> Result<Value> {
-        let path = Path::new().and(&"users".to_owned()).and(&self.username).ok();
+        let path = Path::new().slash(&"users".to_owned()).slash(&self.username).ok();
 
         self.engine.engine.username(&self.username).unwrap();
         self.engine.engine.password(&self.password).unwrap();

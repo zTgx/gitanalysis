@@ -10,7 +10,7 @@ impl Path {
         }
     }
 
-    pub fn and(&mut self, p: &String) -> &mut Self {
+    pub fn slash(&mut self, p: &String) -> &mut Self {
         self.host = self.host.to_owned() + "/" + p.as_str();
 
         self

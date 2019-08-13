@@ -21,7 +21,7 @@ impl <'a> Profile <'a> {
     }
 
     pub fn get(&mut self) -> Result<Value> {
-        let path = Path::new().and(&"users".to_owned()).and(&self.username).ok();
+        let path = Path::new().slash(&"users".to_owned()).slash(&self.username).ok();
 
         self.engine.get(&path)
     }
