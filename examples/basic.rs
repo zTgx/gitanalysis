@@ -6,8 +6,8 @@ use Api::app::profile::Profile;
 fn main() {
     let mut engine = Engine::new();
     let _ = BasicAuth::new(&mut engine).username("username".to_owned())
-                                              .password("password".to_owned())
-                                              .auth();
+                                       .password("password".to_owned())
+                                       .auth();
 
     let profile = Profile::new(&mut engine).username("username".to_owned()).get();
     println!("profile: {:?}", profile);
