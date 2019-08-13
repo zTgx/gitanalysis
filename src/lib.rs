@@ -2,6 +2,7 @@
 use serde_json::{Value};
 extern crate curl;
 use curl::easy::{Easy, List};
+use curl::Error;
 
 static HOST: &'static str = "https://api.github.com";
 
@@ -81,6 +82,34 @@ impl <'a> BasicAuth <'a> {
     pub fn auth(&mut self) -> Result<Value, String> {
         let path = Path::new().and(&"users".to_owned()).and(&self.username).ok();
 
+        self.engine.username(&self.username).unwrap();
+        self.engine.password(&self.password).unwrap();
+
+        Ok( self.engine.get(&path) )
+    }
+}
+
+pub struct Profile <'a> {
+    pub engine: &'a mut Engine,
+    pub username: String,
+}
+impl <'a> Profile <'a> {
+    pub fn new(engine: &'a mut Engine) -> Self {
+        Profile {
+            engine: engine,
+            username: "".to_owned(),
+        }
+    }
+
+    pub fn username(&mut self, username: String) -> &mut Self {
+        self.username = username;
+
+        self
+    }
+
+    pub fn get(&mut self) -> Result<Value, String> {
+        let path = Path::new().and(&"users".to_owned()).and(&self.username).ok();
+
         Ok( self.engine.get(&path) )
     }
 }
@@ -100,6 +129,14 @@ impl Engine {
 
     pub fn headers(&mut self) {
         self.engine.http_headers(Header::get()).unwrap();
+    }
+
+    pub fn username(&mut self, username: &String) -> Result<(), Error> {
+        self.engine.username(&username)
+    }
+
+    pub fn password(&mut self, password: &String) -> Result<(), Error> {
+        self.engine.password(&password)
     }
 }
 
