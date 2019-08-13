@@ -42,8 +42,8 @@ impl Path {
         self
     }
 
-    pub fn ok(&self) -> Result<String, String> {
-        Ok( self.host.to_owned() )
+    pub fn ok(&self) -> String {
+        self.host.to_owned()
     }
 }
 
