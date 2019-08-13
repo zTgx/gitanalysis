@@ -8,9 +8,8 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-gitapi-rs = "0.1.1"
+gitapi-rs = "0.1.2"
 ```
 ```rust
 extern crate gitapi_rs as Api;
-use Api::GitApi;
 ```
