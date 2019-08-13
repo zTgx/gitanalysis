@@ -17,12 +17,12 @@ impl Header {
 
 pub struct Config {}
 impl Config {
-    pub fn host() -> &'static str {
-        HOST
+    pub fn host() -> String {
+        HOST.to_owned()
     }
 
-    pub fn get_url(path: &'static str) -> String {
-        Config::host().to_owned() + path
+    pub fn get_url(path: &String) -> String {
+        Config::host().to_owned() + path.as_str()
     }
 }
 
@@ -32,12 +32,12 @@ pub struct Path{
 impl Path {
     pub fn new() -> Self {
         Path {
-            host: HOST.to_string(),
+            host: Config::host(),
         }
     }
 
-    pub fn and(&mut self, p: &'static str) -> &mut Self {
-        self.host = self.host.to_owned() + "/" + p;
+    pub fn and(&mut self, p: &String) -> &mut Self {
+        self.host = self.host.to_owned() + "/" + p.as_str();
 
         self
     }
@@ -47,14 +47,52 @@ impl Path {
     }
 }
 
-pub struct GitApi {
-    pub host: &'static str,
+pub enum AuthenType {
+    Basic(String),
+    Oauth2(String),
+}
+
+pub struct BasicAuth <'a> {
+    pub engine: &'a mut Engine,
+    pub username: String,
+    pub password: String,
+}
+impl <'a> BasicAuth <'a> {
+    pub fn new(engine: &'a mut Engine) -> Self {
+        BasicAuth {
+            engine: engine,
+            username: "".to_owned(),
+            password: "".to_owned(),
+        }
+    }
+
+    pub fn username(&mut self, username: String) -> &mut Self {
+        self.username = username;
+
+        self
+    }
+
+    pub fn password(&mut self, password: String) -> &mut Self {
+        self.password = password;
+
+        self
+    }
+
+    pub fn auth(&mut self) -> Result<Value, String> {
+        let path = Path::new().and(&"users".to_owned()).and(&self.username).ok();
+
+        Ok( self.engine.get(&path) )
+    }
+}
+
+pub struct Engine {
+    pub host: String,
     pub engine: Easy,
 }
-impl GitApi {
+impl Engine {
     pub fn new() -> Self {
         let handle = Easy::new();
-        GitApi {
+        Engine {
             host: Config::host(),
             engine: handle,
         }
@@ -65,7 +103,7 @@ impl GitApi {
     }
 }
 
-impl GitApi {
+impl Engine {
     pub fn get(&mut self, path: &String) -> Value {
         self.headers();
 
